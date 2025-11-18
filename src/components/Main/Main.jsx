@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import Column from '../Column/Column';
-import { cardList } from '../../data.js'; // синхронный импорт
+import { cardList } from '../../data.js';
+import { MainContainer, MainContent, Board, LoadingText } from './Main.styled';
 
 const COLUMNS = [
   { title: 'Без статуса', status: 'Без статуса' },
@@ -17,42 +18,35 @@ const Main = () => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    // Имитируем задержку загрузки (например, запрос к API)
     const timer = setTimeout(() => {
-      setTasks(cardList);       // загружаем данные
-      setIsLoading(false);      // скрываем "загрузку"
-    }, 800); // 0.8 секунды — для наглядности
-
-    // Очистка таймера при размонтировании (хорошая практика)
+      setTasks(cardList);
+      setIsLoading(false);
+    }, 800);
     return () => clearTimeout(timer);
   }, []);
 
   if (isLoading) {
     return (
-      <main className="main">
-        <div className="main__loading">
-          Данные загружаются…
-        </div>
-      </main>
+      <MainContainer>
+        <LoadingText>Данные загружаются…</LoadingText>
+      </MainContainer>
     );
   }
 
   return (
-    <main className="main">
-      <div className="container">
-        <div className="main__block">
-          <div className="main__content">
-            {COLUMNS.map((col) => (
-              <Column
-                key={col.status}
-                title={col.title}
-                cards={tasks.filter((task) => task.status === col.status)}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </main>
+    <MainContainer>
+      <MainContent>
+        <Board>
+          {COLUMNS.map((col) => (
+            <Column
+              key={col.status}
+              title={col.title}
+              cards={tasks.filter((task) => task.status === col.status)}
+            />
+          ))}
+        </Board>
+      </MainContent>
+    </MainContainer>
   );
 };
 
