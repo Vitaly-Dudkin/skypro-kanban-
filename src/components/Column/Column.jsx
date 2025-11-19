@@ -2,25 +2,26 @@
 
 import React from 'react';
 import Card from '../Card/Card';
+import { ColumnContainer, ColumnTitle, TitleText, CardsContainer } from './Column.styled';
 
 const Column = ({ title, cards }) => {
   return (
-    <div className="main__column column">
-      <div className="column__title">
-        <p>{title}</p>
-      </div>
-      <div className="cards">
-        {cards.map(card => (
+    <ColumnContainer>
+      <ColumnTitle>
+        <TitleText>{title}</TitleText>
+      </ColumnTitle>
+      <CardsContainer>
+        {cards.map((card) => (
           <Card
             key={card.id}
             id={card.id}
-            theme={card.theme} 
+            theme={card.theme}
             title={card.title}
             date={card.date}
           />
         ))}
-      </div>
-    </div>
+      </CardsContainer>
+    </ColumnContainer>
   );
 };
 
