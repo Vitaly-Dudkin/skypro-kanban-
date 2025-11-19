@@ -3,7 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import Column from '../Column/Column';
 import { cardList } from '../../data.js';
-import { MainContainer, MainContent, Board, LoadingText } from './Main.styled';
+import {
+  MainWrapper,
+  MainContainer,
+  MainContent,
+  Board,
+  LoadingText,
+} from './Main.styled';
 
 const COLUMNS = [
   { title: 'Без статуса', status: 'Без статуса' },
@@ -27,26 +33,30 @@ const Main = () => {
 
   if (isLoading) {
     return (
-      <MainContainer>
-        <LoadingText>Данные загружаются…</LoadingText>
-      </MainContainer>
+      <MainWrapper>
+        <MainContainer>
+          <LoadingText>Данные загружаются…</LoadingText>
+        </MainContainer>
+      </MainWrapper>
     );
   }
 
   return (
-    <MainContainer>
-      <MainContent>
-        <Board>
-          {COLUMNS.map((col) => (
-            <Column
-              key={col.status}
-              title={col.title}
-              cards={tasks.filter((task) => task.status === col.status)}
-            />
-          ))}
-        </Board>
-      </MainContent>
-    </MainContainer>
+    <MainWrapper>
+      <MainContainer>
+        <MainContent>
+          <Board>
+            {COLUMNS.map((col) => (
+              <Column
+                key={col.status}
+                title={col.title}
+                cards={tasks.filter((task) => task.status === col.status)}
+              />
+            ))}
+          </Board>
+        </MainContent>
+      </MainContainer>
+    </MainWrapper>
   );
 };
 

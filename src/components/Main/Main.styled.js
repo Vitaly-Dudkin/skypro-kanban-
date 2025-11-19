@@ -2,9 +2,16 @@
 
 import styled from 'styled-components';
 
-export const MainContainer = styled.main`
+export const MainWrapper = styled.main`
   width: 100%;
   background-color: #eaeef6;
+`;
+
+export const MainContainer = styled.div`
+  max-width: 1260px;   /* как в старом .container */
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 30px;
 `;
 
 export const MainContent = styled.div`
@@ -16,6 +23,7 @@ export const MainContent = styled.div`
 export const Board = styled.div`
   width: 100%;
   display: flex;
+  gap: 24px; /* небольшой отступ между колонками (по желанию) */
 `;
 
 export const LoadingText = styled.div`
