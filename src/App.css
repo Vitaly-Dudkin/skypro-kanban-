@@ -643,6 +643,12 @@ body {
   margin-right: 8px;
 }
 
+.pop-new-card:target,
+.pop-browse:target,
+.pop-exit:target {
+  display: block;
+}
+
 .form-browse__block {
   display: flex;
   flex-direction: column;
