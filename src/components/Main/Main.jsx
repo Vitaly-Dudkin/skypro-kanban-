@@ -19,7 +19,7 @@ const COLUMNS = [
   { title: 'Готово', status: 'Готово' },
 ];
 
-const Main = () => {
+const Main = ({ loading = false }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [tasks, setTasks] = useState([]);
 

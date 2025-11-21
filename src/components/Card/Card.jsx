@@ -67,7 +67,7 @@ const Card = ({ id, theme, title, date }) => {
     <CardItem>
       <CardWrapper>
         <CardGroup>
-          <ThemeBadge themeType={themeClass}>
+          <ThemeBadge $themeType={themeClass}>
             <ThemeText>{theme}</ThemeText>
           </ThemeBadge>
           <MenuButton as="a" href="#popBrowse" target="_self">

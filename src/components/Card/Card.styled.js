@@ -47,7 +47,7 @@ export const ThemeBadge = styled.div`
   padding: 5px 14px;
   border-radius: 18px;
   background-color: ${(props) => {
-    switch (props.themeType) {
+    switch (props.$themeType) { // ← $themeType
       case '_orange': return '#FFE4C2';
       case '_green': return '#B4FDD1';
       case '_purple': return '#E9D4FF';
@@ -56,7 +56,7 @@ export const ThemeBadge = styled.div`
     }
   }};
   color: ${(props) => {
-    switch (props.themeType) {
+    switch (props.$themeType) { // ← $themeType
       case '_orange': return '#FF6D00';
       case '_green': return '#06B16E';
       case '_purple': return '#9A48F1';

@@ -1,6 +1,7 @@
 // src/components/Header/Header.jsx
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   HeaderContainer,
   Container,
@@ -20,9 +21,19 @@ import {
 function Header() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userDropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   const toggleUserMenu = () => setIsUserMenuOpen((prev) => !prev);
   const closeUserMenu = () => setIsUserMenuOpen(false);
+
+  const handleLogout = () => {
+    // Удаляем данные авторизации
+    localStorage.removeItem('isAuth');
+    // Закрываем меню
+    setIsUserMenuOpen(false);
+    // Перенаправляем на страницу входа
+    navigate('/login', { replace: true });
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -35,7 +46,7 @@ function Header() {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isUserMenuOpen]);
+  }, []);
 
   return (
     <HeaderContainer>
@@ -72,7 +83,7 @@ function Header() {
                     <p>Темная тема</p>
                     <input type="checkbox" name="checkbox" />
                   </MenuTheme>
-                  <MenuExitButton as="a" href="#popExit">
+                  <MenuExitButton onClick={handleLogout}>
                     Выйти
                   </MenuExitButton>
                 </UserMenu>
