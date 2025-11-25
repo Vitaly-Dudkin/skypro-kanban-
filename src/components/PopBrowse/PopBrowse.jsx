@@ -4,8 +4,9 @@
 
 import React from 'react';
 
-function PopBrowse() {
-  return (<div className="pop-browse" id="popBrowse">
+function PopBrowse({ isOpen, onClose, taskId }) {
+  if (!isOpen) return null;
+  return (<div className="pop-browse" style={{ display: 'block' }}>
         <div className="pop-browse__container">
           <div className="pop-browse__block">
             <div className="pop-browse__content">
@@ -141,9 +142,12 @@ function PopBrowse() {
                     <a href="#">Удалить задачу</a>
                   </button>
                 </div>
-                <button className="btn-browse__close _btn-bg _hover01">
-                  <a href="#">Закрыть</a>
-                </button>
+            <button 
+              className="btn-browse__close _btn-bg _hover01" 
+              onClick={onClose}
+            >
+              Закрыть
+            </button>
               </div>
               <div className="pop-browse__btn-edit _hide">
                 <div className="btn-group">

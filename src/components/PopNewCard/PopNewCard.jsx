@@ -2,16 +2,18 @@
 
 import React from 'react';
 
-function PopNewCard() {
+function PopNewCard({ isOpen, onClose }) {
+  if (!isOpen) return null;
+
   return (
-    <div className="pop-new-card" id="popNewCard">
+    <div className="pop-new-card" style={{ display: 'block' }}>
       <div className="pop-new-card__container">
         <div className="pop-new-card__block">
           <div className="pop-new-card__content">
             <h3 className="pop-new-card__ttl">Создание задачи</h3>
-            <a href="#" className="pop-new-card__close">
-              &#10006;
-            </a>
+            <button className="pop-new-card__close" onClick={onClose}>
+              &times;
+            </button>
             <div className="pop-new-card__wrap">
               <form className="pop-new-card__form form-new" id="formNewCard" action="#">
                 <div className="form-new__block">

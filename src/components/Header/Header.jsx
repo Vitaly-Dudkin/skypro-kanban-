@@ -1,7 +1,7 @@
 // src/components/Header/Header.jsx
 
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   HeaderContainer,
   Container,
@@ -18,22 +18,13 @@ import {
   MenuExitButton,
 } from './Header.styled';
 
-function Header() {
+function Header({ onOpenPopNew }) {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userDropdownRef = useRef(null);
   const navigate = useNavigate();
 
   const toggleUserMenu = () => setIsUserMenuOpen((prev) => !prev);
   const closeUserMenu = () => setIsUserMenuOpen(false);
-
-  const handleLogout = () => {
-    // Удаляем данные авторизации
-    localStorage.removeItem('isAuth');
-    // Закрываем меню
-    setIsUserMenuOpen(false);
-    // Перенаправляем на страницу входа
-    navigate('/login', { replace: true });
-  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -47,6 +38,13 @@ function Header() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  const handleCreateTask = () => {
+    navigate('/task/new');
+    if (onOpenPopNew) {
+      onOpenPopNew();
+    }
+  };
 
   return (
     <HeaderContainer>
@@ -63,7 +61,7 @@ function Header() {
             </a>
           </Logo>
           <Nav>
-            <MainButton as="a" href="#popNewCard">
+            <MainButton onClick={handleCreateTask}>
               Создать новую задачу
             </MainButton>
 
@@ -83,7 +81,7 @@ function Header() {
                     <p>Темная тема</p>
                     <input type="checkbox" name="checkbox" />
                   </MenuTheme>
-                  <MenuExitButton onClick={handleLogout}>
+                  <MenuExitButton as={Link} to="/exit">
                     Выйти
                   </MenuExitButton>
                 </UserMenu>

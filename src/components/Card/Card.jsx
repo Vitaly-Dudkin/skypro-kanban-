@@ -1,6 +1,7 @@
 // src/components/Card/Card.jsx
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   CardItem,
   CardWrapper,
@@ -70,16 +71,18 @@ const Card = ({ id, theme, title, date }) => {
           <ThemeBadge $themeType={themeClass}>
             <ThemeText>{theme}</ThemeText>
           </ThemeBadge>
-          <MenuButton as="a" href="#popBrowse" target="_self">
+          {/* Тройная точка — пока без действия */}
+          <MenuButton as={Link} to={`/task/${id}`}>
             <Dot />
             <Dot />
             <Dot />
           </MenuButton>
         </CardGroup>
         <CardContent>
-          <a href="" target="_blank" style={{ textDecoration: 'none' }}>
+          {/* Клик по заголовку → открывает /task/:id */}
+          <Link to={`/task/${id}`} style={{ textDecoration: 'none' }}>
             <CardTitle>{title}</CardTitle>
-          </a>
+          </Link>
           <DateContainer>
             <CalendarIcon />
             <DateText>{formattedDate}</DateText>
