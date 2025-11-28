@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Column from '../Column/Column';
-import { cardList } from '../../data.js';
+import { cardList } from '../../data';
 import {
   MainWrapper,
   MainContainer,
@@ -19,7 +19,7 @@ const COLUMNS = [
   { title: 'Готово', status: 'Готово' },
 ];
 
-const Main = ({ loading = false }) => {
+const Main = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [tasks, setTasks] = useState([]);
 
@@ -29,7 +29,7 @@ const Main = ({ loading = false }) => {
       setIsLoading(false);
     }, 800);
     return () => clearTimeout(timer);
-  }, []);
+  }, []); // ← пустой массив зависимостей!
 
   if (isLoading) {
     return (
