@@ -2,6 +2,18 @@
 
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import {
+  AuthContainer,
+  ModalBox,
+  Logo,
+  Title,
+  InputWrapper,
+  Input,
+  ErrorText,
+  SubmitButton,
+  SwitchLink,
+  LinkStyled,
+} from './AuthForm.styled';
 
 const AuthForm = ({ isSignUp, setIsAuth }) => {
   const [formData, setFormData] = useState({
@@ -18,10 +30,8 @@ const AuthForm = ({ isSignUp, setIsAuth }) => {
   const validate = () => {
     const newErrors = {};
 
-    if (isSignUp) {
-      if (!formData.name.trim()) {
-        newErrors.name = 'Имя обязательно';
-      }
+    if (isSignUp && !formData.name.trim()) {
+      newErrors.name = 'Имя обязательно';
     }
 
     if (!formData.email) {
@@ -46,7 +56,6 @@ const AuthForm = ({ isSignUp, setIsAuth }) => {
       [name]: value,
     }));
 
-    // Очищаем ошибку при изменении поля
     if (errors[name]) {
       setErrors((prev) => {
         const updated = { ...prev };
@@ -64,7 +73,6 @@ const AuthForm = ({ isSignUp, setIsAuth }) => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      // ✅ Всё валидно
       localStorage.setItem('isAuth', 'true');
       localStorage.setItem('userEmail', formData.email);
       setIsAuth(true);
@@ -84,109 +92,76 @@ const AuthForm = ({ isSignUp, setIsAuth }) => {
   };
 
   return (
-    <div className="bg" style={{ padding: '20px' }}>
-      <div className="modal" style={{ maxWidth: '400px', margin: '0 auto', background: 'white', borderRadius: '8px', padding: '30px' }}>
-        <div className="logo" style={{ textAlign: 'center', fontSize: '24px', marginBottom: '20px' }}>
-          SkyPro Kanban
-        </div>
+    <AuthContainer>
+      <ModalBox>
+        <Logo>SkyPro Kanban</Logo>
         <div className="wrapper">
-          <h2 className="title" style={{ textAlign: 'center', marginBottom: '20px' }}>
-            {isSignUp ? 'Регистрация' : 'Вход'}
-          </h2>
-          <form className="form" onSubmit={handleSubmit}>
+          <Title>{isSignUp ? 'Регистрация' : 'Вход'}</Title>
+          <form onSubmit={handleSubmit}>
             <div className="input-wrapper">
               {isSignUp && (
-                <div style={{ marginBottom: '16px' }}>
-                  <input
+                <InputWrapper>
+                  <Input
                     name="name"
                     type="text"
                     placeholder="Имя"
                     value={formData.name}
                     onChange={handleChange}
-                    style={{
-                      width: '100%',
-                      padding: '10px',
-                      border: errors.name ? '1px solid red' : '1px solid #ccc',
-                      borderRadius: '4px',
-                    }}
+                    $hasError={!!errors.name}
                   />
-                  {errors.name && <span style={{ color: 'red', fontSize: '12px' }}>{errors.name}</span>}
-                </div>
+                  {errors.name && <ErrorText>{errors.name}</ErrorText>}
+                </InputWrapper>
               )}
 
-              <div style={{ marginBottom: '16px' }}>
-                <input
+              <InputWrapper>
+                <Input
                   name="email"
                   type="email"
                   placeholder="Эл. почта"
                   value={formData.email}
                   onChange={handleChange}
-                  style={{
-                    width: '100%',
-                    padding: '10px',
-                    border: errors.email ? '1px solid red' : '1px solid #ccc',
-                    borderRadius: '4px',
-                  }}
+                  $hasError={!!errors.email}
                 />
-                {errors.email && <span style={{ color: 'red', fontSize: '12px' }}>{errors.email}</span>}
-              </div>
+                {errors.email && <ErrorText>{errors.email}</ErrorText>}
+              </InputWrapper>
 
-              <div style={{ marginBottom: '16px' }}>
-                <input
+              <InputWrapper>
+                <Input
                   name="password"
                   type="password"
                   placeholder="Пароль"
                   value={formData.password}
                   onChange={handleChange}
-                  style={{
-                    width: '100%',
-                    padding: '10px',
-                    border: errors.password ? '1px solid red' : '1px solid #ccc',
-                    borderRadius: '4px',
-                  }}
+                  $hasError={!!errors.password}
                 />
-                {errors.password && <span style={{ color: 'red', fontSize: '12px' }}>{errors.password}</span>}
-              </div>
+                {errors.password && <ErrorText>{errors.password}</ErrorText>}
+              </InputWrapper>
             </div>
 
-            <button
+            <SubmitButton
               type="submit"
-              disabled={!isFormValid() || isSubmitting}
-              style={{
-                width: '100%',
-                padding: '12px',
-                background: !isFormValid() || isSubmitting ? '#ccc' : '#565EEF',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: !isFormValid() || isSubmitting ? 'not-allowed' : 'pointer',
-                fontSize: '16px',
-              }}
+              $disabled={!isFormValid() || isSubmitting}
             >
               {isSubmitting ? 'Загрузка...' : isSignUp ? 'Зарегистрироваться' : 'Войти'}
-            </button>
+            </SubmitButton>
 
-            <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <SwitchLink>
               {isSignUp ? (
-                <p>
+                <>
                   Есть аккаунт?{' '}
-                  <Link to="/login" style={{ color: '#565EEF', textDecoration: 'none' }}>
-                    Войдите здесь
-                  </Link>
-                </p>
+                  <LinkStyled to="/login">Войдите здесь</LinkStyled>
+                </>
               ) : (
-                <p>
+                <>
                   Нужно зарегистрироваться?{' '}
-                  <Link to="/register" style={{ color: '#565EEF', textDecoration: 'none' }}>
-                    Регистрируйтесь здесь
-                  </Link>
-                </p>
+                  <LinkStyled to="/register">Регистрируйтесь здесь</LinkStyled>
+                </>
               )}
-            </div>
+            </SwitchLink>
           </form>
         </div>
-      </div>
-    </div>
+      </ModalBox>
+    </AuthContainer>
   );
 };
 
