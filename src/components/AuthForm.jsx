@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { login, register } from '../services/auth';
+import { getFriendlyErrorMessage } from '../utils/errorMessages';
 import {
   AuthContainer,
   ModalBox,
@@ -102,11 +103,16 @@ const AuthForm = ({ isSignUp }) => {
 
       navigate('/');
     } catch (error) {
-      setSubmitError(error.message || 'Произошла ошибка. Попробуйте позже.');
+  const friendlyMessage = getFriendlyErrorMessage(
+    error.message,
+    !isSignUp // isLogin = true, если не регистрация
+      );
+      setSubmitError(friendlyMessage);
     } finally {
       setIsSubmitting(false);
     }
   };
+  
 
   const isFormValid = () => {
     return (
