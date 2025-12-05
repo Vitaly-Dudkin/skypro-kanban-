@@ -60,8 +60,9 @@ const CalendarIcon = () => (
   </svg>
 );
 
-const Card = ({ id, theme, title, date }) => {
-  const themeClass = getThemeClass(theme);
+// ✅ Исправлено: _id вместо id
+const Card = ({ _id, topic, title, date }) => {
+  const themeClass = getThemeClass(topic);
   const formattedDate = formatDate(date);
 
   return (
@@ -69,18 +70,16 @@ const Card = ({ id, theme, title, date }) => {
       <CardWrapper>
         <CardGroup>
           <ThemeBadge $themeType={themeClass}>
-            <ThemeText>{theme}</ThemeText>
+            <ThemeText>{topic}</ThemeText>
           </ThemeBadge>
-          {/* Тройная точка — пока без действия */}
-          <MenuButton as={Link} to={`/task/${id}`}>
+          <MenuButton as={Link} to={`/task/${_id}`}>
             <Dot />
             <Dot />
             <Dot />
           </MenuButton>
         </CardGroup>
         <CardContent>
-          {/* Клик по заголовку → открывает /task/:id */}
-          <Link to={`/task/${id}`} style={{ textDecoration: 'none' }}>
+          <Link to={`/task/${_id}`} style={{ textDecoration: 'none' }}>
             <CardTitle>{title}</CardTitle>
           </Link>
           <DateContainer>
