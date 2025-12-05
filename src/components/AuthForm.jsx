@@ -127,7 +127,7 @@ const AuthForm = ({ isSignUp }) => {
     <AuthContainer>
       <ModalBox>
         <Logo>SkyPro Kanban</Logo>
-        {submitError && <ErrorText>{submitError}</ErrorText>}
+
         <div className="wrapper">
           <Title>{isSignUp ? 'Регистрация' : 'Вход'}</Title>
           <form onSubmit={handleSubmit}>
