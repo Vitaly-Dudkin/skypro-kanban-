@@ -14,7 +14,12 @@ export function TaskProvider({ children }) {
     setError(null);
     try {
       const data = await getTasks();
-      setTasks(data.tasks || []);
+      // ✅ Нормализация: если приходит _id, копируем в id для удобства
+      const normalizedTasks = (data.tasks || []).map(task => ({
+        ...task,
+        id: task.id || task._id, // fallback для совместимости
+      }));
+      setTasks(normalizedTasks);
     } catch (err) {
       setError(err.message || 'Не удалось загрузить задачи');
       console.error('Ошибка загрузки задач:', err);
@@ -31,8 +36,13 @@ export function TaskProvider({ children }) {
     setError(null);
     try {
       const newTask = await createTask(taskData);
-      setTasks(prev => [...prev, newTask]);
-      return newTask;
+      // ✅ Нормализуем новую задачу тоже
+      const normalized = {
+        ...newTask,
+        id: newTask.id || newTask._id,
+      };
+      setTasks(prev => [...prev, normalized]);
+      return normalized;
     } catch (err) {
       setError(err.message || 'Не удалось создать задачу');
       throw err;
@@ -43,7 +53,12 @@ export function TaskProvider({ children }) {
     setError(null);
     try {
       const updated = await updateTask(id, updates);
-      setTasks(prev => prev.map(t => t.id === id ? updated : t));
+      // ✅ Обновляем по _id или id — универсально
+      setTasks(prev =>
+        prev.map(task =>
+          (task._id === id || task.id === id) ? { ...task, ...updated, id: updated.id || updated._id } : task
+        )
+      );
       return updated;
     } catch (err) {
       setError(err.message || 'Не удалось обновить задачу');
@@ -55,7 +70,10 @@ export function TaskProvider({ children }) {
     setError(null);
     try {
       await deleteTask(id);
-      setTasks(prev => prev.filter(t => t.id !== id));
+      // ✅ Удаляем по _id ИЛИ id (защита от несовпадения)
+      setTasks(prev =>
+        prev.filter(task => task._id !== id && task.id !== id)
+      );
     } catch (err) {
       setError(err.message || 'Не удалось удалить задачу');
       throw err;

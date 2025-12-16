@@ -85,6 +85,7 @@ function PopNewCard({ isOpen, onClose }) {
   };
 
   const handleSubmit = async (e) => {
+    console.log('✅ handleSubmit вызван!');
     e.preventDefault();
     try {
       const newTask = {
@@ -96,6 +97,10 @@ function PopNewCard({ isOpen, onClose }) {
       };
       await addTask(newTask);
       onClose();
+      await addTask(newTask);
+console.log('✅ addTask завершён');
+onClose();
+console.log('✅ onClose вызван');
     } catch (err) {
       alert(err.message || 'Ошибка создания задачи');
     }
