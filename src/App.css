@@ -95,7 +95,7 @@ body {
 }
 
 ._active-day {
-  background-color: #94A6BE;
+  background-color: #dfe3e8;
   color: #FFFFFF;
 }
 
@@ -501,6 +501,35 @@ body {
   letter-spacing: -0.2px;
   cursor: pointer;
 }
+.status__theme {
+  border-radius: 24px;
+  border: 0.7px solid rgba(148, 166, 190, 0.4);
+  color: #94A6BE;
+  padding: 11px 14px 10px;
+  margin-right: 7px;
+  margin-bottom: 7px;
+}
+
+.status__theme {
+  border-radius: 16px;           /* уменьшили радиус */
+  border: 0.7px solid rgba(148, 166, 190, 0.4);
+  color: #94A6BE;
+  padding: 6px 10px;             /* уменьшили вертикальный и горизонтальный отступ */
+  margin-right: 6px;             /* уменьшили отступ между статусами */
+  margin-bottom: 0;              /* убрали нижний отступ — все в одной строке */
+  font-size: 12px;               /* чуть меньше шрифт */
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.status__themes {
+  display: flex;
+  flex-wrap: nowrap;               /* ЗАПРЕЩАЕМ перенос */
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;                          /* или убери margin вручную */
+}
+
 .calendar__nav {
   width: 100%;
   display: flex;

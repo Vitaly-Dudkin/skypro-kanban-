@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { login, register } from '../services/auth';
+import { getFriendlyErrorMessage } from '../utils/errorMessages';
 import {
   AuthContainer,
   ModalBox,
@@ -15,29 +17,47 @@ import {
   LinkStyled,
 } from './AuthForm.styled';
 
-const AuthForm = ({ isSignUp, setIsAuth }) => {
+const AuthForm = ({ isSignUp }) => {
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
+    login: '', // ← изменили email → login
     password: '',
   });
 
   const [errors, setErrors] = useState({});
+  const [submitError, setSubmitError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors((prev) => {
+        const updated = { ...prev };
+        delete updated[name];
+        return updated;
+      });
+    }
+    if (submitError) {
+      setSubmitError('');
+    }
+  };
+
   const validate = () => {
     const newErrors = {};
 
-    if (isSignUp && !formData.name.trim()) {
-      newErrors.name = 'Имя обязательно';
+    if (isSignUp) {
+      if (!formData.name.trim()) {
+        newErrors.name = 'Имя обязательно';
+      }
     }
 
-    if (!formData.email) {
-      newErrors.email = 'Email обязателен';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Неверный формат email';
+    if (!formData.login.trim()) {
+      newErrors.login = 'Логин обязателен';
+    } else if (formData.login.length < 3) {
+      newErrors.login = 'Логин должен быть не короче 3 символов';
     }
 
     if (!formData.password) {
@@ -49,42 +69,54 @@ const AuthForm = ({ isSignUp, setIsAuth }) => {
     return newErrors;
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    if (errors[name]) {
-      setErrors((prev) => {
-        const updated = { ...prev };
-        delete updated[name];
-        return updated;
-      });
-    }
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError('');
 
     const newErrors = validate();
     setErrors(newErrors);
 
-    if (Object.keys(newErrors).length === 0) {
-      localStorage.setItem('isAuth', 'true');
-      localStorage.setItem('userEmail', formData.email);
-      setIsAuth(true);
-      navigate('/');
+    if (Object.keys(newErrors).length > 0) {
+      setIsSubmitting(false);
+      return;
     }
 
-    setIsSubmitting(false);
+    try {
+      let response;
+      if (isSignUp) {
+        response = await register({
+          login: formData.login, 
+          name: formData.name,
+          password: formData.password,
+        });
+      } else {
+        response = await login({
+          login: formData.login, 
+          password: formData.password,
+        });
+      }
+
+      // Сохраняем токен
+      localStorage.setItem('token', response.user.token);
+      localStorage.setItem('isAuth', 'true');
+
+      navigate('/');
+    } catch (error) {
+  const friendlyMessage = getFriendlyErrorMessage(
+    error.message,
+    !isSignUp // isLogin = true, если не регистрация
+      );
+      setSubmitError(friendlyMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+  
 
   const isFormValid = () => {
     return (
-      formData.email &&
+      formData.login &&
       formData.password &&
       (!isSignUp || formData.name) &&
       Object.keys(errors).length === 0
@@ -95,6 +127,7 @@ const AuthForm = ({ isSignUp, setIsAuth }) => {
     <AuthContainer>
       <ModalBox>
         <Logo>SkyPro Kanban</Logo>
+
         <div className="wrapper">
           <Title>{isSignUp ? 'Регистрация' : 'Вход'}</Title>
           <form onSubmit={handleSubmit}>
@@ -115,14 +148,14 @@ const AuthForm = ({ isSignUp, setIsAuth }) => {
 
               <InputWrapper>
                 <Input
-                  name="email"
-                  type="email"
-                  placeholder="Эл. почта"
-                  value={formData.email}
+                  name="login"
+                  type="text"
+                  placeholder="Логин"
+                  value={formData.login}
                   onChange={handleChange}
-                  $hasError={!!errors.email}
+                  $hasError={!!errors.login}
                 />
-                {errors.email && <ErrorText>{errors.email}</ErrorText>}
+                {errors.login && <ErrorText>{errors.login}</ErrorText>}
               </InputWrapper>
 
               <InputWrapper>

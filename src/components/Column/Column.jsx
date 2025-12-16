@@ -13,9 +13,9 @@ const Column = ({ title, cards }) => {
       <CardsContainer>
         {cards.map((card) => (
           <Card
-            key={card.id}
-            id={card.id}
-            theme={card.theme}
+            key={card._id}        // ← уникальный ключ из API
+            _id={card._id}        // ← передаём _id, а не id
+            topic={card.topic}
             title={card.title}
             date={card.date}
           />

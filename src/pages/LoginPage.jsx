@@ -3,6 +3,6 @@
 import { useState } from 'react';
 import AuthForm from '../components/AuthForm';
 
-export default function LoginPage({ setIsAuth }) {
-  return <AuthForm isSignUp={false} setIsAuth={setIsAuth} />;
+export default function LoginPage() {
+  return <AuthForm isSignUp={false} />;
 }

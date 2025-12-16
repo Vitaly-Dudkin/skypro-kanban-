@@ -4,8 +4,14 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom'; // ← важно: импортируем Link здесь
 
 export const AuthContainer = styled.div`
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
+  background: #f1f1f1; /* опционально — фон как на макете */
 `;
+
 
 export const ModalBox = styled.div`
   max-width: 400px;
@@ -51,10 +57,11 @@ export const Input = styled.input`
 `;
 
 export const ErrorText = styled.span`
-  color: red;
-  font-size: 12px;
+  color: #d32f2f;
+  font-size: 14px;
   display: block;
-  margin-top: 4px;
+  margin-top: 12px;
+  text-align: center;
 `;
 
 export const SubmitButton = styled.button`

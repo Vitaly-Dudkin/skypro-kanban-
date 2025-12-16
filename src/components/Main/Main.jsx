@@ -1,8 +1,6 @@
 // src/components/Main/Main.jsx
 
-import React, { useState, useEffect } from 'react';
 import Column from '../Column/Column';
-import { cardList } from '../../data';
 import {
   MainWrapper,
   MainContainer,
@@ -19,23 +17,12 @@ const COLUMNS = [
   { title: 'Готово', status: 'Готово' },
 ];
 
-const Main = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [tasks, setTasks] = useState([]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setTasks(cardList);
-      setIsLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []); // ← пустой массив зависимостей!
-
-  if (isLoading) {
+const Main = ({ tasks = [], loading }) => { // ← принимаем задачи
+  if (loading) {
     return (
       <MainWrapper>
         <MainContainer>
-          <LoadingText>Данные загружаются…</LoadingText>
+          <LoadingText>Загрузка задач...</LoadingText>
         </MainContainer>
       </MainWrapper>
     );
