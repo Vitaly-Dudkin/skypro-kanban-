@@ -25,11 +25,12 @@ kanbanApi.interceptors.request.use((config) => {
 kanbanApi.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('isAuth');
-      window.location.href = '/login';
-    }
+if (error.response?.status === 401) {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user'); // ← 'isAuth' не нужен, его нет нигде
+  // НЕ ДЕЛАЕМ window.location.href!
+  // Пусть PrivateRoute сам перенаправит при следующем рендере
+}
     const message = error.response?.data?.message || 'Ошибка API';
     return Promise.reject(new Error(message));
   }
