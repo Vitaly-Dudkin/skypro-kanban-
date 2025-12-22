@@ -1,5 +1,4 @@
 // src/services/api.js
-
 import axios from 'axios';
 
 const BASE_URL = 'https://wedev-api.sky.pro/api';
@@ -8,7 +7,7 @@ const BASE_URL = 'https://wedev-api.sky.pro/api';
 const kanbanApi = axios.create({
   baseURL: BASE_URL,
   headers: {
-    'Content-Type': '',
+    'Content-Type': 'application/json',
   },
 });
 
@@ -21,32 +20,30 @@ kanbanApi.interceptors.request.use((config) => {
   return config;
 });
 
-// Обработка 401 — выход из системы
+// Обработка ошибок: 401 — тихий сброс, остальные — проброс с сообщением
 kanbanApi.interceptors.response.use(
   (response) => response,
   (error) => {
-if (error.response?.status === 401) {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user'); // ← 'isAuth' не нужен, его нет нигде
-  // НЕ ДЕЛАЕМ window.location.href!
-  // Пусть PrivateRoute сам перенаправит при следующем рендере
-}
+    // ✅ Обрабатываем 401 отдельно — без редиректа и без alert
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      return Promise.reject(error); // пробрасываем ошибку "как есть"
+    }
+
+    // ✅ Все остальные ошибки — с понятным сообщением
     const message = error.response?.data?.message || 'Ошибка API';
     return Promise.reject(new Error(message));
   }
 );
 
-// Получить все задачи
+// Экспортируемые методы
 export const getTasks = () => kanbanApi.get('/kanban').then(res => res.data);
 
-// Получить задачу по ID
 export const getTaskById = (id) => kanbanApi.get(`/kanban/${id}`).then(res => res.data);
 
-// Создать задачу
 export const createTask = (taskData) => kanbanApi.post('/kanban', taskData).then(res => res.data);
 
-// Обновить задачу
 export const updateTask = (id, taskData) => kanbanApi.put(`/kanban/${id}`, taskData).then(res => res.data);
 
-// Удалить задачу
 export const deleteTask = (id) => kanbanApi.delete(`/kanban/${id}`).then(res => res.data);
