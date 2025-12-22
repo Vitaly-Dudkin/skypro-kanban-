@@ -37,7 +37,6 @@ kanbanApi.interceptors.response.use(
   }
 );
 
-// Экспортируемые методы
 export const getTasks = () => kanbanApi.get('/kanban').then(res => res.data);
 
 export const getTaskById = (id) => kanbanApi.get(`/kanban/${id}`).then(res => res.data);
