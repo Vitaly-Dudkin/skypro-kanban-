@@ -24,14 +24,13 @@ kanbanApi.interceptors.request.use((config) => {
 kanbanApi.interceptors.response.use(
   (response) => response,
   (error) => {
-    // ✅ Обрабатываем 401 отдельно — без редиректа и без alert
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       return Promise.reject(error); // пробрасываем ошибку "как есть"
     }
 
-    // ✅ Все остальные ошибки — с понятным сообщением
+  
     const message = error.response?.data?.message || 'Ошибка API';
     return Promise.reject(new Error(message));
   }

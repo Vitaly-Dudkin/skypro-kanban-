@@ -98,9 +98,9 @@ function PopNewCard({ isOpen, onClose }) {
       await addTask(newTask);
       onClose();
       await addTask(newTask);
-console.log('✅ addTask завершён');
+
 onClose();
-console.log('✅ onClose вызван');
+
     } catch (err) {
       alert(err.message || 'Ошибка создания задачи');
     }
