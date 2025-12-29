@@ -70,7 +70,6 @@ export function TaskProvider({ children }) {
     setError(null);
     try {
       await deleteTask(id);
-      // ✅ Удаляем по _id ИЛИ id (защита от несовпадения)
       setTasks(prev =>
         prev.filter(task => task._id !== id && task.id !== id)
       );

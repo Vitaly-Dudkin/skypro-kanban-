@@ -7,7 +7,7 @@ const BASE_URL = 'https://wedev-api.sky.pro/api';
 const kanbanApi = axios.create({
   baseURL: BASE_URL,
   headers: {
-    'Content-Type': 'application/json',
+    'Content-Type': '',
   },
 });
 
