@@ -1,6 +1,7 @@
 // src/components/Main/Main.jsx
 
 import Column from '../Column/Column';
+import { useTheme } from '../../contexts/ThemeContext';
 import {
   MainWrapper,
   MainContainer,
@@ -18,6 +19,7 @@ const COLUMNS = [
 ];
 
 const Main = ({ tasks = [], loading }) => { // ← принимаем задачи
+  const { theme } = useTheme();
   if (loading) {
     return (
       <MainWrapper>

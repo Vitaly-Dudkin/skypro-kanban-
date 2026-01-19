@@ -3,8 +3,14 @@
 import styled from 'styled-components';
 
 export const MainWrapper = styled.main`
-  width: 100%;
-  background-color: #eaeef6;
+  background-color: var(--bg-board);
+`;
+
+export const TitleText = styled.p`
+  color: var(--text-secondary); /* ← CSS-переменная */
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
 `;
 
 export const MainContainer = styled.div`

@@ -1,7 +1,7 @@
 // src/components/Card/Card.jsx
-
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTheme } from '../../contexts/ThemeContext';
 import {
   CardItem,
   CardWrapper,
@@ -16,17 +16,6 @@ import {
   DateText,
 } from './Card.styled';
 
-const getThemeClass = (theme) => {
-  switch (theme) {
-    case 'Работа': return '_orange';
-    case 'Личное': return '_green';
-    case 'Путешествия': return '_purple';
-    case 'Учёба': return '_green';
-    case 'Здоровье': return '_gray';
-    default: return '_gray';
-  }
-};
-
 const formatDate = (dateStr) => {
   return new Date(dateStr).toLocaleDateString('ru-RU', {
     day: '2-digit',
@@ -40,13 +29,13 @@ const CalendarIcon = () => (
     <g clipPath="url(#clip0_1_415)">
       <path
         d="M10.5625 2.03125H2.4375C1.7644 2.03125 1.21875 2.5769 1.21875 3.25V10.5625C1.21875 11.2356 1.7644 11.7812 2.4375 11.7812H10.5625C11.2356 11.7812 11.7812 11.2356 11.7812 10.5625V3.25C11.7812 2.5769 11.2356 2.03125 10.5625 2.03125Z"
-        stroke="#94A6BE"
+        stroke="currentColor"
         strokeWidth="0.8"
         strokeLinejoin="round"
       />
       <path
         d="M11.7812 4.0625H1.21875M3.25 1.21875V2.03125V1.21875ZM9.75 1.21875V2.03125V1.21875Z"
-        stroke="#94A6BE"
+        stroke="currentColor"
         strokeWidth="0.8"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -60,16 +49,38 @@ const CalendarIcon = () => (
   </svg>
 );
 
-// ✅ Исправлено: _id вместо id
 const Card = ({ _id, topic, title, date }) => {
-  const themeClass = getThemeClass(topic);
+  const { theme } = useTheme();
+
+  // Определяем класс фона
+  const getBadgeBgClass = (topicValue) => {
+    switch (topicValue) {
+      case 'Web Design': return '_orange';
+      case 'Research': return '_green';
+      case 'Copywriting': return '_purple';
+      default: return '_gray';
+    }
+  };
+
+const getBadgeTextColor = (topicValue) => {
+  // Всегда используем оригинальные цвета — независимо от темы
+  switch (topicValue) {
+    case 'Web Design': return '#FF6D00';
+    case 'Research': return '#06B16E';
+    case 'Copywriting': return '#9A48F1';
+    default: return '#FFFFFF'; // белый только для серого/дефолтного
+  }
+};
+
+  const badgeBgClass = getBadgeBgClass(topic);
+  const badgeTextColor = getBadgeTextColor(topic);
   const formattedDate = formatDate(date);
 
   return (
     <CardItem>
       <CardWrapper>
         <CardGroup>
-          <ThemeBadge $themeType={themeClass}>
+          <ThemeBadge $themeType={badgeBgClass} $textColor={badgeTextColor}>
             <ThemeText>{topic}</ThemeText>
           </ThemeBadge>
           <MenuButton as={Link} to={`/task/${_id}`}>
@@ -92,4 +103,4 @@ const Card = ({ _id, topic, title, date }) => {
   );
 };
 
-export default Card;
+export default Card; // ← КЛЮЧЕВОЙ ЭКСПОРТ

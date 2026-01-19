@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../../contexts/ThemeContext';
 import {
   HeaderContainer,
   Container,
@@ -19,6 +20,7 @@ import {
 } from './Header.styled';
 
 function Header({ onOpenPopNew, setIsAuth }) {
+  const { theme, toggleTheme } = useTheme();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
   const userDropdownRef = useRef(null);
@@ -99,9 +101,13 @@ function Header({ onOpenPopNew, setIsAuth }) {
                   </CloseButton>
                   <MenuName>Ivan Ivanov</MenuName>
                   <MenuEmail>ivan.ivanov@gmail.com</MenuEmail>
-                  <MenuTheme>
+                 <MenuTheme>
                     <p>Темная тема</p>
-                    <input type="checkbox" name="checkbox" />
+                    <input
+                      type="checkbox"
+                      checked={theme === 'dark'}
+                      onChange={toggleTheme}
+                    />
                   </MenuTheme>
                   <MenuExitButton onClick={handleLogoutClick}>
                     Выйти

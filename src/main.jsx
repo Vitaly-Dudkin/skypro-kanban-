@@ -5,13 +5,16 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { AuthProvider } from './contexts/AuthContext';
 import { TaskProvider } from './contexts/TaskContext';
+import { ThemeProvider } from './contexts/ThemeContext'; // ← добавили
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
         <TaskProvider>
-          <App />
+          <ThemeProvider> {/* ← обёртка */}
+            <App />
+          </ThemeProvider>
         </TaskProvider>
       </AuthProvider>
     </BrowserRouter>

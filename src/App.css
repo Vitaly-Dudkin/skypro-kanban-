@@ -1,3 +1,24 @@
+:root {
+  --bg-app: #ffffff;          /* фон всего приложения */
+  --bg-board: #eaeef6;        /* фон доски */
+  --bg-card: #ffffff;          /* фон карточек */
+  --text-color: #000000;
+  --text-secondary: #94a6be;
+}
+
+[data-theme='dark'] {
+  --bg-app: #121212;
+  --bg-board: #1e1e1e;
+  --bg-card: #2d2d2d;         /* ← карточки темнее доски */
+  --text-color: #ffffff;
+  --text-secondary: #adb5bd;
+}
+
+body {
+  background-color: var(--bg-app);
+  color: var(--text-color);
+}
+
 * {
   margin: 0;
   padding: 0;
