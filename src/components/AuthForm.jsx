@@ -99,7 +99,7 @@ const AuthForm = ({ isSignUp }) => {
 
       // Сохраняем токен
       localStorage.setItem('token', response.user.token);
-      localStorage.setItem('isAuth', 'true');
+
 
       navigate('/');
     } catch (error) {

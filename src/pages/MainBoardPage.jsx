@@ -1,37 +1,24 @@
 // src/pages/MainBoardPage.jsx
-
 import React, { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { getTasks } from '../services/api'; // ← импортируем API
+import { useTasks } from '../contexts/TaskContext';
+import { useAuth } from '../contexts/AuthContext';
 import Main from '../components/Main/Main';
 import Header from '../components/Header/Header';
 import PopExit from '../components/PopExit/PopExit';
 import PopNewCard from '../components/PopNewCard/PopNewCard';
 import PopBrowse from '../components/PopBrowse/PopBrowse';
 
-export default function MainBoard  () {
+export default function MainBoard() {
+  const { tasks, loading } = useTasks();
+  const { user } = useAuth();
+
   const [isPopNewOpen, setIsPopNewOpen] = useState(false);
-  const [browseTaskId, setBrowseTaskId] = useState(null);
-  const [tasks, setTasks] = useState([]); // ← состояние задач
-  const [loading, setLoading] = useState(true);
+  const [browseTaskId, setBrowseTaskId] = useState(null); // ← будет строкой!
   const location = useLocation();
   const { id } = useParams();
 
-  // Загружаем задачи при монтировании
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const data = await getTasks();
-        setTasks(data.tasks || []);
-      } catch (error) {
-        console.error('Ошибка загрузки задач:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchTasks();
-  }, []);
-
+  // Синхронизация модалки "Новая задача" с URL
   useEffect(() => {
     if (location.pathname === '/task/new') {
       setIsPopNewOpen(true);
@@ -40,9 +27,10 @@ export default function MainBoard  () {
     }
   }, [location.pathname]);
 
+  // ✅ ИСПРАВЛЕНО: не Number(id), а id как строка
   useEffect(() => {
     if (location.pathname.startsWith('/task/') && location.pathname !== '/task/new') {
-      setBrowseTaskId(id);
+      setBrowseTaskId(id || null); // ← id — строка (например, "6937d1713917f31abbed4c8d")
     } else {
       setBrowseTaskId(null);
     }
@@ -51,28 +39,23 @@ export default function MainBoard  () {
   const closeNewTaskModal = () => setIsPopNewOpen(false);
   const closeBrowseModal = () => setBrowseTaskId(null);
 
-  // Функция для обновления списка задач (будет передаваться в PopNewCard)
-  const handleTasksUpdate = (updatedTasks) => {
-    setTasks(updatedTasks);
-  };
-
   return (
     <div className="wrapper">
       <PopExit />
       <PopNewCard 
         isOpen={isPopNewOpen} 
         onClose={closeNewTaskModal}
-        onTasksUpdate={handleTasksUpdate} // ← передаём обработчик
       />
       <PopBrowse 
-        isOpen={!!browseTaskId} 
-        taskId={browseTaskId} 
+        isOpen={!!browseTaskId}   // ← !!'abc' → true, !!null → false
+        taskId={browseTaskId}     // ← строка
         onClose={closeBrowseModal}
-        tasks={tasks}
-        onTasksUpdate={handleTasksUpdate} // ← для удаления/редактирования
       />
-      <Header onOpenPopNew={() => setIsPopNewOpen(true)} />
-      <Main tasks={tasks} loading={loading} /> {/* ← передаём задачи */}
+      <Header 
+        user={user}
+        onOpenPopNew={() => setIsPopNewOpen(true)} 
+      />
+      <Main tasks={tasks} loading={loading} />
     </div>
   );
 }

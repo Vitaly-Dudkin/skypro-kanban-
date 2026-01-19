@@ -1,9 +1,11 @@
 // src/components/PopBrowse/PopBrowse.jsx
-
 import React, { useState, useEffect } from 'react';
-import { getTaskById, updateTask, deleteTask } from '../../services/api';
+import { useTasks } from '../../contexts/TaskContext';
 
-function PopBrowse({ isOpen, onClose, taskId, onTasksUpdate }) {
+function PopBrowse({ isOpen, onClose, taskId }) {
+  // ✅ Context API вместо пропсов и прямых вызовов API
+  const { tasks, editTask, removeTask } = useTasks();
+
   const [task, setTask] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -15,48 +17,42 @@ function PopBrowse({ isOpen, onClose, taskId, onTasksUpdate }) {
     status: '',
   });
 
-  // Загрузка задачи при открытии
+  // ✅ Хуки строго в начале — никаких нарушений
   useEffect(() => {
-    if (!isOpen || !taskId) return;
+    if (!isOpen || !taskId) {
+      setLoading(false);
+      return;
+    }
 
-    const fetchTask = async () => {
-      setLoading(true);
+    // Ищем задачу в уже загруженных данных (без getTaskById!)
+    const found = tasks.find(t => String(t._id) === String(taskId));
+    if (found) {
+      setTask(found);
+      setFormData({
+        title: found.title,
+        description: found.description || '',
+        topic: found.topic,
+        status: found.status,
+      });
       setError('');
-      try {
-        const response = await getTaskById(taskId);
-        const taskData = response.task;
-        setTask(taskData);
-        setFormData({
-          title: taskData.title,
-          description: taskData.description || '',
-          topic: taskData.topic,
-          status: taskData.status,
-        });
-      } catch (err) {
-        setError(err.message || 'Не удалось загрузить задачу');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTask();
-  }, [isOpen, taskId]);
+    } else {
+      setError('Задача не найдена');
+    }
+    setLoading(false);
+  }, [isOpen, taskId, tasks]);
 
   const handleDelete = async () => {
     if (!window.confirm('Вы уверены, что хотите удалить задачу?')) return;
 
     try {
-      const response = await deleteTask(taskId);
-      onTasksUpdate(response.tasks);
+      await removeTask(taskId); // ✅ Context — обновит tasks глобально
       onClose();
     } catch (err) {
       setError(err.message || 'Не удалось удалить задачу');
     }
   };
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
+  const handleEdit = () => setIsEditing(true);
 
   const handleCancelEdit = () => {
     setIsEditing(false);
@@ -72,17 +68,13 @@ function PopBrowse({ isOpen, onClose, taskId, onTasksUpdate }) {
 
   const handleSave = async () => {
     try {
-      const updatedTask = {
+      await editTask(taskId, {
         title: formData.title,
         description: formData.description,
         topic: formData.topic,
         status: formData.status,
-        date: task.date, // сохраняем исходную дату
-      };
-
-      const response = await updateTask(taskId, updatedTask);
-      onTasksUpdate(response.tasks);
-      setTask(response.tasks.find(t => t._id === taskId));
+        date: task.date,
+      }); // ✅ Context — обновит задачу и tasks
       setIsEditing(false);
     } catch (err) {
       setError(err.message || 'Не удалось сохранить изменения');
@@ -91,7 +83,7 @@ function PopBrowse({ isOpen, onClose, taskId, onTasksUpdate }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   if (!isOpen) return null;
@@ -107,7 +99,7 @@ function PopBrowse({ isOpen, onClose, taskId, onTasksUpdate }) {
               <p style={{ color: 'red' }}>{error}</p>
             ) : task ? (
               <>
-                {/* Заголовок и тема */}
+                {/* Заголовок и тема — точь-в-точь как в оригинале */}
                 <div className="pop-browse__top-block">
                   {isEditing ? (
                     <input
@@ -125,7 +117,7 @@ function PopBrowse({ isOpen, onClose, taskId, onTasksUpdate }) {
                   </div>
                 </div>
 
-                {/* Статус */}
+                {/* Статус — с _gray и _hide */}
                 <div className="pop-browse__status status">
                   <p className="status__p subttl">Статус</p>
                   {isEditing ? (
@@ -143,26 +135,46 @@ function PopBrowse({ isOpen, onClose, taskId, onTasksUpdate }) {
                     </select>
                   ) : (
                     <div className="status__themes">
-                      <div className={`status__theme ${task.status === 'Нужно сделать' ? '_gray' : '_hide'}`}>
+                      <div
+                        className={`status__theme ${
+                          task.status === 'Нужно сделать' ? '_gray' : '_hide'
+                        }`}
+                      >
                         <p className="_gray">Нужно сделать</p>
                       </div>
-                      <div className={`status__theme ${task.status === 'В работе' ? '_gray' : '_hide'}`}>
+                      <div
+                        className={`status__theme ${
+                          task.status === 'В работе' ? '_gray' : '_hide'
+                        }`}
+                      >
                         <p className="_gray">В работе</p>
                       </div>
-                      <div className={`status__theme ${task.status === 'Тестирование' ? '_gray' : '_hide'}`}>
+                      <div
+                        className={`status__theme ${
+                          task.status === 'Тестирование' ? '_gray' : '_hide'
+                        }`}
+                      >
                         <p className="_gray">Тестирование</p>
                       </div>
-                      <div className={`status__theme ${task.status === 'Готово' ? '_gray' : '_hide'}`}>
+                      <div
+                        className={`status__theme ${
+                          task.status === 'Готово' ? '_gray' : '_hide'
+                        }`}
+                      >
                         <p className="_gray">Готово</p>
                       </div>
-                      <div className={`status__theme ${task.status === 'Без статуса' ? '_gray' : '_hide'}`}>
+                      <div
+                        className={`status__theme ${
+                          task.status === 'Без статуса' ? '_gray' : '_hide'
+                        }`}
+                      >
                         <p className="_gray">Без статуса</p>
                       </div>
                     </div>
                   )}
                 </div>
 
-                {/* Описание */}
+                {/* Описание — с form-browse__area */}
                 <div className="pop-browse__wrap">
                   <div className="pop-browse__form form-browse">
                     <div className="form-browse__block">
@@ -188,7 +200,7 @@ function PopBrowse({ isOpen, onClose, taskId, onTasksUpdate }) {
                   </div>
                 </div>
 
-                {/* Категория */}
+                {/* Категория — theme-down__categories */}
                 <div className="theme-down__categories theme-down">
                   <p className="categories__p subttl">Категория</p>
                   <div className="categories__theme _orange _active-category">
@@ -196,17 +208,26 @@ function PopBrowse({ isOpen, onClose, taskId, onTasksUpdate }) {
                   </div>
                 </div>
 
-                {/* Кнопки */}
+                {/* Кнопки — с _btn-bg, _btn-bor, _hover01, _hover03 */}
                 {isEditing ? (
                   <div className="pop-browse__btn-edit">
                     <div className="btn-group">
-                      <button className="btn-edit__edit _btn-bg _hover01" onClick={handleSave}>
+                      <button
+                        className="btn-edit__edit _btn-bg _hover01"
+                        onClick={handleSave}
+                      >
                         Сохранить
                       </button>
-                      <button className="btn-edit__edit _btn-bor _hover03" onClick={handleCancelEdit}>
+                      <button
+                        className="btn-edit__edit _btn-bor _hover03"
+                        onClick={handleCancelEdit}
+                      >
                         Отменить
                       </button>
-                      <button className="btn-edit__delete _btn-bor _hover03" onClick={handleDelete}>
+                      <button
+                        className="btn-edit__delete _btn-bor _hover03"
+                        onClick={handleDelete}
+                      >
                         Удалить задачу
                       </button>
                     </div>
@@ -220,10 +241,16 @@ function PopBrowse({ isOpen, onClose, taskId, onTasksUpdate }) {
                 ) : (
                   <div className="pop-browse__btn-browse">
                     <div className="btn-group">
-                      <button className="btn-browse__edit _btn-bor _hover03" onClick={handleEdit}>
+                      <button
+                        className="btn-browse__edit _btn-bor _hover03"
+                        onClick={handleEdit}
+                      >
                         Редактировать задачу
                       </button>
-                      <button className="btn-browse__delete _btn-bor _hover03" onClick={handleDelete}>
+                      <button
+                        className="btn-browse__delete _btn-bor _hover03"
+                        onClick={handleDelete}
+                      >
                         Удалить задачу
                       </button>
                     </div>
