@@ -85,7 +85,6 @@ function PopNewCard({ isOpen, onClose }) {
   };
 
   const handleSubmit = async (e) => {
-    console.log('✅ handleSubmit вызван!');
     e.preventDefault();
     try {
       const newTask = {
@@ -95,9 +94,9 @@ function PopNewCard({ isOpen, onClose }) {
         status,
         date: selectedDate.toISOString(),
       };
-      await addTask(newTask);
-      onClose();
-      await addTask(newTask);
+    await addTask(newTask);
+    onClose();
+
 
 onClose();
 
