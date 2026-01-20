@@ -20,52 +20,59 @@ export const CardItem = styled.div`
 `;
 
 export const CardWrapper = styled.div`
-  width: 220px;
-  height: 130px;
-  background-color: var(--bg-card); /* ← фон карточки */
+  width: 100%; /* ← растягивается на всю колонку */
+  max-width: 220px; /* ← но не больше 220px на десктопе */
+  min-width: 200px; /* ← минимальная ширина */
+  height: auto; /* ← высота подстраивается */
+  min-height: 130px;
+  background-color: var(--bg-card);
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: stretch;
-  padding: 15px 13px 19px;
-  color: var(--text-color); /* ← основной текст */
+  justify-content: space-between;
+  padding: 14px 12px;
+  color: var(--text-color);
+
+  @media (max-width: 768px) {
+    max-width: none;
+    min-width: auto;
+    width: 100%;
+    padding: 12px 10px;
+  }
 `;
 
 export const CardGroup = styled.div`
   width: 100%;
-  height: 20px;
-  margin-bottom: 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 10px;
 `;
 
-// src/components/Card/Card.styled.js
 export const ThemeBadge = styled.div`
-  width: auto;
   height: 20px;
-  padding: 5px 14px;
-  border-radius: 18px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
   background-color: ${(props) => {
     switch (props.$themeType) {
       case '_orange': return '#FFE4C2';
       case '_green': return '#B4FDD1';
       case '_purple': return '#E9D4FF';
-      case '_gray': return '#94A6BE';
       default: return '#94A6BE';
     }
   }};
-  color: ${(props) => props.$textColor || '#FFFFFF'}; /* ← динамический цвет текста */
+  color: ${(props) => props.$textColor || '#FFFFFF'};
 `;
 
 export const ThemeText = styled.p`
-  font-size: 10px;
-  font-weight: 600;
-  line-height: 10px;
-  white-space: nowrap;
   margin: 0;
+  line-height: 1;
 `;
+
 export const MenuButton = styled.button`
   width: 24px;
   height: 24px;
@@ -76,42 +83,47 @@ export const MenuButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+  flex-shrink: 0; /* ← не сжимается */
 `;
 
 export const Dot = styled.div`
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background-color: var(--text-secondary); /* ← вместо #94a6be */
+  background-color: var(--text-secondary);
 `;
 
 export const CardContent = styled.div`
-  height: 64px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
+  gap: 8px;
 `;
 
 export const CardTitle = styled.h3`
   font-size: 14px;
   font-weight: 500;
-  line-height: 18px;
-  color: var(--text-color); /* ← вместо #000000 */
-  margin-bottom: 10px;
-  margin-top: 0;
+  line-height: 1.3;
+  color: var(--text-color);
+  margin: 0;
+  word-break: break-word; /* ← перенос длинных слов */
+  overflow-wrap: break-word;
 `;
 
 export const DateContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  gap: 6px;
+  width: 100%;
 `;
 
 export const DateText = styled.p`
-  margin-left: 6px;
   font-size: 10px;
-  line-height: 13px;
-  color: var(--text-secondary); /* ← вместо #94a6be */
+  line-height: 1.3;
+  color: var(--text-secondary);
   letter-spacing: 0.2px;
+  white-space: nowrap;
 `;

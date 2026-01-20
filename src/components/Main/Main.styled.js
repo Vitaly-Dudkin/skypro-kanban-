@@ -1,35 +1,33 @@
 // src/components/Main/Main.styled.js
-
 import styled from 'styled-components';
 
 export const MainWrapper = styled.main`
   background-color: var(--bg-board);
-`;
-
-export const TitleText = styled.p`
-  color: var(--text-secondary); /* ← CSS-переменная */
-  font-size: 14px;
-  font-weight: 600;
-  text-transform: uppercase;
+  padding: 0 16px; /* ← отступы на мобилке */
 `;
 
 export const MainContainer = styled.div`
-  max-width: 1260px;   /* как в старом .container */
+  max-width: 1260px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 30px;
+  padding: 0;
 `;
 
 export const MainContent = styled.div`
   width: 100%;
-  margin: 0 auto;
-  padding: 25px 0 49px;
+  padding: 20px 0 40px;
 `;
 
 export const Board = styled.div`
   width: 100%;
   display: flex;
-  gap: 24px; /* небольшой отступ между колонками (по желанию) */
+  gap: 20px;
+  overflow-x: auto; /* ← прокрутка на мобилке */
+  padding-bottom: 10px;
+
+  @media (max-width: 768px) {
+    flex-wrap: nowrap; /* ← не переносить колонки */
+  }
 `;
 
 export const LoadingText = styled.div`
@@ -38,6 +36,6 @@ export const LoadingText = styled.div`
   align-items: center;
   min-height: 200px;
   font-size: 18px;
-  color: #565eef;
+  color: var(--primary-color);
   font-weight: 500;
 `;
