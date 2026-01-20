@@ -58,6 +58,9 @@ export const MainButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+    &.header-create-btn {
+    /* просто класс для скрытия */
+  }
 
   &:hover {
     background-color: #33399b;

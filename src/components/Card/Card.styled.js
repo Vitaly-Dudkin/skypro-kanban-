@@ -20,11 +20,8 @@ export const CardItem = styled.div`
 `;
 
 export const CardWrapper = styled.div`
-  width: 100%; /* ← растягивается на всю колонку */
-  max-width: 220px; /* ← но не больше 220px на десктопе */
-  min-width: 200px; /* ← минимальная ширина */
-  height: auto; /* ← высота подстраивается */
-  min-height: 130px;
+  width: 220px;        /* ← фиксировано */
+  height: 130px;       /* ← фиксировано */
   background-color: var(--bg-card);
   border-radius: 10px;
   display: flex;
@@ -33,12 +30,11 @@ export const CardWrapper = styled.div`
   justify-content: space-between;
   padding: 14px 12px;
   color: var(--text-color);
+  flex-shrink: 0; /* ← не сжимать в колонке */
 
   @media (max-width: 768px) {
-    max-width: none;
-    min-width: auto;
-    width: 100%;
-    padding: 12px 10px;
+    width: 220px; /* ← остаётся 220px даже на мобилке */
+    height: 130px;
   }
 `;
 

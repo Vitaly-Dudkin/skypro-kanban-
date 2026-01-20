@@ -2,19 +2,11 @@
 import styled from 'styled-components';
 
 export const ColumnContainer = styled.div`
-  width: 100%;
-  max-width: 240px;
+  width: auto; /* ← не 100% */
   display: flex;
   flex-direction: column;
-  flex-shrink: 0; /* ← не сжимать колонки */
-
-  @media (max-width: 1024px) {
-    max-width: 220px;
-  }
-
-  @media (max-width: 768px) {
-    max-width: 100%;
-  }
+  flex-shrink: 0;
+  padding: 0 8px; /* ← отступы между колонками */
 `;
 
 export const ColumnTitle = styled.div`
@@ -31,8 +23,8 @@ export const TitleText = styled.p`
 `;
 
 export const CardsContainer = styled.div`
-  width: 100%;
+  width: 220px; /* ← ширина колонки = ширине карточки */
   display: flex;
   flex-direction: column;
-  gap: 8px; /* ← отступ между карточками */
+  gap: 8px;
 `;

@@ -912,3 +912,17 @@ body {
     display: block;
   }
 }
+
+/* Показываем кнопку только на мобилке */
+@media (max-width: 768px) {
+  .mobile-create-btn {
+    display: block !important;
+  }
+}
+
+/* Скрываем оригинальную кнопку в хедере на мобилке */
+@media (max-width: 768px) {
+  .header-create-btn {
+    display: none !important;
+  }
+}

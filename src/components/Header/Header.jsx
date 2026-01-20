@@ -85,7 +85,10 @@ function Header({ onOpenPopNew, setIsAuth }) {
             </a>
           </Logo>
           <Nav>
-            <MainButton onClick={handleCreateTask}>
+            <MainButton 
+              className="header-create-btn" 
+              onClick={handleCreateTask}
+            >
               Создать новую задачу
             </MainButton>
 

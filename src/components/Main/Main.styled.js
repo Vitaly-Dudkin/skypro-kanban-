@@ -21,13 +21,16 @@ export const MainContent = styled.div`
 export const Board = styled.div`
   width: 100%;
   display: flex;
-  gap: 20px;
-  overflow-x: auto; /* ← прокрутка на мобилке */
-  padding-bottom: 10px;
+  gap: 16px; /* ← отступ между колонками */
+  overflow-x: auto;
+  padding: 0 8px 16px; /* ← отступы для скролла */
+  -webkit-overflow-scrolling: touch; /* ← плавный скролл на iOS */
 
-  @media (max-width: 768px) {
-    flex-wrap: nowrap; /* ← не переносить колонки */
+  /* Скрываем скроллбар (опционально) */
+  &::-webkit-scrollbar {
+    display: none;
   }
+  scrollbar-width: none; /* Firefox */
 `;
 
 export const LoadingText = styled.div`
