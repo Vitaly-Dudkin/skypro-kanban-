@@ -74,16 +74,16 @@ function Header({ onOpenPopNew, setIsAuth }) {
     <HeaderContainer>
       <Container>
         <HeaderBlock>
-          <Logo className="_show _light">
-            <a href="" target="_self" rel="noopener noreferrer">
-              <img src="/images/logo.png" alt="logo" />
-            </a>
-          </Logo>
-          <Logo className="_dark">
-            <a href="" target="_self" rel="noopener noreferrer">
-              <img src="/images/logo_dark.png" alt="logo" />
-            </a>
-          </Logo>
+         <Logo className="_show _light" $isDark={theme === 'dark'}>
+  <a href="/" rel="noopener noreferrer">
+    <img src="/images/logo.png" alt="logo" />
+  </a>
+</Logo>
+<Logo className="_dark" $isDark={theme === 'dark'}>
+  <a href="/" rel="noopener noreferrer">
+    <img src="/images/logo_dark.png" alt="logo" />
+  </a>
+</Logo>
           <Nav>
             <MainButton 
               className="header-create-btn" 

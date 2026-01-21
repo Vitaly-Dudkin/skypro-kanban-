@@ -1,10 +1,10 @@
 // src/components/Header/Header.styled.js
-
 import styled from 'styled-components';
 
 export const HeaderContainer = styled.header`
   width: 100%;
-  background-color: #ffffff;
+  background-color: var(--bg-card); /* ← фон хедера */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 `;
 
 export const Container = styled.div`
@@ -22,15 +22,16 @@ export const HeaderBlock = styled.div`
   padding: 0 10px;
 `;
 
+// Логотип — управляем через CSS
 export const Logo = styled.div`
   img {
     width: 85px;
+    filter: ${({ $isDark }) => $isDark ? 'brightness(0) invert(1)' : 'none'}; /* ← делает логотип белым */
   }
 
   &._dark {
     display: none;
   }
-
   &._show._light {
     display: block;
   }
@@ -41,37 +42,26 @@ export const Nav = styled.nav`
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 20px;
 `;
 
 export const MainButton = styled.button`
   width: 178px;
   height: 30px;
   border-radius: 4px;
-  background-color: #565eef;
-  color: #ffffff;
+  background-color: var(--primary-color);
+  color: white;
   border: none;
   font-size: 14px;
   font-weight: 500;
-  margin-right: 20px;
   cursor: pointer;
-  outline: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-    &.header-create-btn {
-    /* просто класс для скрытия */
-  }
 
   &:hover {
-    background-color: #33399b;
+    background-color: var(--primary-hover);
   }
 
-  a {
-    color: #ffffff;
-    text-decoration: none;
-    display: block;
-    width: 100%;
-    height: 100%;
+  &.header-create-btn {
+    /* просто класс для скрытия */
   }
 `;
 
@@ -84,14 +74,13 @@ export const UserNameButton = styled.button`
   justify-content: center;
   font-size: 14px;
   line-height: 20px;
-  color: #565eef;
+  color: var(--text-color); /* ← имя меняет цвет */
   cursor: pointer;
-  outline: none;
   position: relative;
 
   &:hover,
   &:focus {
-    color: #33399b;
+    color: var(--primary-hover);
   }
 
   &::after {
@@ -100,16 +89,16 @@ export const UserNameButton = styled.button`
     width: 6px;
     height: 6px;
     border-radius: 1px;
-    border-left: 1.9px solid #565eef;
-    border-bottom: 1.9px solid #565eef;
+    border-left: 1.9px solid var(--text-color);
+    border-bottom: 1.9px solid var(--text-color);
     transform: rotate(-45deg);
     margin-left: 5px;
   }
 
   &:hover::after,
   &:focus::after {
-    border-left-color: #33399b;
-    border-bottom-color: #33399b;
+    border-left-color: var(--primary-hover);
+    border-bottom-color: var(--primary-hover);
   }
 `;
 
@@ -120,9 +109,9 @@ export const UserMenu = styled.div`
   width: 213px;
   min-height: 200px;
   border-radius: 10px;
-  border: 0.7px solid rgba(148, 166, 190, 0.4);
-  background: #fff;
-  box-shadow: 0px 10px 39px 0px rgba(26, 56, 101, 0.21);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card); /* ← тёмный фон */
+  box-shadow: 0px 10px 39px 0px rgba(0, 0, 0, 0.2);
   padding: 34px;
   text-align: center;
   z-index: 2;
@@ -130,6 +119,7 @@ export const UserMenu = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  color: var(--text-color); /* ← весь текст белый */
 `;
 
 export const CloseButton = styled.button`
@@ -140,22 +130,21 @@ export const CloseButton = styled.button`
   border: none;
   font-size: 18px;
   cursor: pointer;
-  color: #94a6be;
+  color: var(--text-secondary);
   width: 24px;
   height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
-  line-height: 1;
 
   &:hover {
-    color: #000;
+    color: var(--text-color);
   }
 `;
 
 export const MenuName = styled.p`
-  color: #000;
+  color: var(--text-color);
   font-size: 14px;
   font-weight: 500;
   line-height: 21px;
@@ -164,7 +153,7 @@ export const MenuName = styled.p`
 `;
 
 export const MenuEmail = styled.p`
-  color: #94a6be;
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 21px;
   letter-spacing: -0.14px;
@@ -180,7 +169,7 @@ export const MenuTheme = styled.div`
   justify-content: space-between;
 
   p {
-    color: #000;
+    color: var(--text-color);
     font-size: 14px;
     line-height: 21px;
     letter-spacing: -0.14px;
@@ -190,8 +179,7 @@ export const MenuTheme = styled.div`
     position: relative;
     width: 36px;
     height: 16px;
-    background: #eaee f6;
-    background: #EAEEF6;
+    background: var(--surface-color);
     border-radius: 8px;
     outline: none;
     -webkit-appearance: none;
@@ -209,13 +197,13 @@ export const MenuTheme = styled.div`
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background-color: #94a6be;
+    background-color: var(--text-secondary);
     transition: 0.3s ease;
   }
 
   input[type='checkbox']:checked::before {
     left: calc(100% - 14px);
-    background-color: #565eef;
+    background-color: var(--primary-color);
   }
 `;
 
@@ -224,11 +212,10 @@ export const MenuExitButton = styled.button`
   min-width: 72px;
   height: 30px;
   background: transparent;
-  color: #565eef;
+  color: var(--primary-color);
   border-radius: 4px;
-  border: 1px solid #565eef;
+  border: 1px solid var(--primary-color);
   cursor: pointer;
-  outline: none;
   font-size: 14px;
   font-weight: 500;
   display: flex;
@@ -236,14 +223,4 @@ export const MenuExitButton = styled.button`
   justify-content: center;
   margin-top: auto;
   padding: 0 12px;
-
-  a {
-    color: #565eef;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-  }
 `;
