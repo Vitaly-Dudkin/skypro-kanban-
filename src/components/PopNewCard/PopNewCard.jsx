@@ -101,7 +101,7 @@ function PopNewCard({ isOpen, onClose }) {
 onClose();
 
     } catch (err) {
-      alert(err.message || 'Ошибка создания задачи');
+      showToast(err.message || 'Ошибка создания задачи');
     }
   };
 

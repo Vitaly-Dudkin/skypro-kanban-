@@ -13,7 +13,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <AuthProvider>
         <TaskProvider>
           <ThemeProvider> {/* ← обёртка */}
-            <App />
+            <ToastProvider> {/* ← обёртка */}
+              <App />
+            </ToastProvider>
           </ThemeProvider>
         </TaskProvider>
       </AuthProvider>
