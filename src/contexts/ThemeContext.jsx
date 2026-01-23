@@ -67,21 +67,22 @@ export function ThemeProvider({ children }) {
     localStorage.setItem('theme', themeName);
 
     // Обновляем ВСЕ CSS-переменные
-    const vars = {
-      '--bg-app': theme.background,
-      '--bg-board': theme.surface,
-      '--bg-card': theme.card,
-      '--text-color': theme.text,
-      '--text-secondary': theme.textSecondary,
-      '--border-color': theme.border,
-      '--primary-color': theme.primary,
-      '--status-gray': theme.status.gray,
-      '--status-orange': theme.status.orange,
-      '--status-green': theme.status.green,
-      '--status-purple': theme.status.purple,
-      '--calendar-cell-bg': theme.calendar.cellBg,
-      '--calendar-active-day': theme.calendar.activeDay,
-    };
+ const vars = {
+  '--bg-app': theme.background,
+  '--bg-board': theme.surface,
+  '--bg-card': theme.card,
+  '--text-color': theme.text,
+  '--text-secondary': theme.textSecondary,
+  '--border-color': theme.border,
+  '--primary-color': theme.primary,
+  '--primary-hover': theme.primaryHover, // ← ДОБАВЬ ЭТУ СТРОКУ
+  '--status-gray': theme.status.gray,
+  '--status-orange': theme.status.orange,
+  '--status-green': theme.status.green,
+  '--status-purple': theme.status.purple,
+  '--calendar-cell-bg': theme.calendar.cellBg,
+  '--calendar-active-day': theme.calendar.activeDay,
+};
 
     Object.entries(vars).forEach(([key, value]) => {
       document.documentElement.style.setProperty(key, value);

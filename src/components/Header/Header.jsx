@@ -1,5 +1,4 @@
 // src/components/Header/Header.jsx
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -29,7 +28,6 @@ function Header({ onOpenPopNew, setIsAuth }) {
   const toggleUserMenu = () => setIsUserMenuOpen((prev) => !prev);
   const closeUserMenu = () => setIsUserMenuOpen(false);
 
-  // Закрытие меню при клике вне
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
@@ -42,7 +40,6 @@ function Header({ onOpenPopNew, setIsAuth }) {
     };
   }, []);
 
-  // Обработка создания задачи
   const handleCreateTask = () => {
     navigate('/task/new');
     if (onOpenPopNew) {
@@ -50,7 +47,6 @@ function Header({ onOpenPopNew, setIsAuth }) {
     }
   };
 
-  // Подтверждение выхода
   const handleConfirmLogout = () => {
     localStorage.removeItem('isAuth');
     if (setIsAuth) setIsAuth(false);
@@ -59,13 +55,11 @@ function Header({ onOpenPopNew, setIsAuth }) {
     setIsUserMenuOpen(false);
   };
 
-  // Открыть модалку подтверждения
   const handleLogoutClick = () => {
-    setIsUserMenuOpen(false); // закрыть выпадающее меню
+    setIsUserMenuOpen(false);
     setShowExitModal(true);
   };
 
-  // Закрыть модалку подтверждения
   const closeExitModal = () => {
     setShowExitModal(false);
   };
@@ -74,21 +68,15 @@ function Header({ onOpenPopNew, setIsAuth }) {
     <HeaderContainer>
       <Container>
         <HeaderBlock>
-         <Logo className="_show _light" $isDark={theme === 'dark'}>
-  <a href="/" rel="noopener noreferrer">
-    <img src="/images/logo.png" alt="logo" />
-  </a>
-</Logo>
-<Logo className="_dark" $isDark={theme === 'dark'}>
-  <a href="/" rel="noopener noreferrer">
-    <img src="/images/logo_dark.png" alt="logo" />
-  </a>
-</Logo>
+          {/* Один логотип — фильтр делает его белым в тёмной теме */}
+          <Logo>
+            <a href="/" rel="noopener noreferrer">
+              <img src="/images/logo.png" alt="logo" />
+            </a>
+          </Logo>
+
           <Nav>
-            <MainButton 
-              className="header-create-btn" 
-              onClick={handleCreateTask}
-            >
+            <MainButton className="header-create-btn" onClick={handleCreateTask}>
               Создать новую задачу
             </MainButton>
 
@@ -104,7 +92,7 @@ function Header({ onOpenPopNew, setIsAuth }) {
                   </CloseButton>
                   <MenuName>Ivan Ivanov</MenuName>
                   <MenuEmail>ivan.ivanov@gmail.com</MenuEmail>
-                 <MenuTheme>
+                  <MenuTheme>
                     <p>Темная тема</p>
                     <input
                       type="checkbox"
@@ -122,7 +110,7 @@ function Header({ onOpenPopNew, setIsAuth }) {
         </HeaderBlock>
       </Container>
 
-      {/* Модальное окно подтверждения выхода */}
+      {/* Модальное окно выхода — с поддержкой темы */}
       {showExitModal && (
         <div
           style={{
@@ -142,7 +130,8 @@ function Header({ onOpenPopNew, setIsAuth }) {
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: 'white',
+              background: 'var(--bg-card)',
+              color: 'var(--text-color)',
               padding: '50px 60px',
               borderRadius: '10px',
               maxWidth: '370px',
@@ -159,7 +148,7 @@ function Header({ onOpenPopNew, setIsAuth }) {
                 style={{
                   width: '153px',
                   height: '30px',
-                  background: '#565EEF',
+                  background: 'var(--primary-color)',
                   color: 'white',
                   border: 'none',
                   borderRadius: '4px',
@@ -174,8 +163,8 @@ function Header({ onOpenPopNew, setIsAuth }) {
                   width: '153px',
                   height: '30px',
                   background: 'transparent',
-                  color: '#565EEF',
-                  border: '0.7px solid #565EEF',
+                  color: 'var(--primary-color)',
+                  border: '1px solid var(--primary-color)',
                   borderRadius: '4px',
                   cursor: 'pointer',
                 }}

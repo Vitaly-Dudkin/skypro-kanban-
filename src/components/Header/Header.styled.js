@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const HeaderContainer = styled.header`
   width: 100%;
-  background-color: var(--bg-card); /* ← фон хедера */
+  background-color: var(--bg-card);
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 `;
 
@@ -22,18 +22,15 @@ export const HeaderBlock = styled.div`
   padding: 0 10px;
 `;
 
-// Логотип — управляем через CSS
+// Логотип — один, но становится белым в тёмной теме
 export const Logo = styled.div`
   img {
     width: 85px;
-    filter: ${({ $isDark }) => $isDark ? 'brightness(0) invert(1)' : 'none'}; /* ← делает логотип белым */
   }
 
-  &._dark {
-    display: none;
-  }
-  &._show._light {
-    display: block;
+  /* Делаем логотип белым в тёмной теме */
+  [data-theme='dark'] & img {
+    filter: brightness(0) invert(1);
   }
 `;
 
@@ -50,7 +47,7 @@ export const MainButton = styled.button`
   height: 30px;
   border-radius: 4px;
   background-color: var(--primary-color);
-  color: white;
+  color: white; /* ← белый текст */
   border: none;
   font-size: 14px;
   font-weight: 500;
@@ -58,6 +55,7 @@ export const MainButton = styled.button`
 
   &:hover {
     background-color: var(--primary-hover);
+    color: white; /* ← ОБЯЗАТЕЛЬНО! */
   }
 
   &.header-create-btn {
@@ -74,7 +72,7 @@ export const UserNameButton = styled.button`
   justify-content: center;
   font-size: 14px;
   line-height: 20px;
-  color: var(--text-color); /* ← имя меняет цвет */
+  color: var(--text-color);
   cursor: pointer;
   position: relative;
 
@@ -110,7 +108,7 @@ export const UserMenu = styled.div`
   min-height: 200px;
   border-radius: 10px;
   border: 1px solid var(--border-color);
-  background: var(--bg-card); /* ← тёмный фон */
+  background: var(--bg-card);
   box-shadow: 0px 10px 39px 0px rgba(0, 0, 0, 0.2);
   padding: 34px;
   text-align: center;
@@ -119,7 +117,7 @@ export const UserMenu = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  color: var(--text-color); /* ← весь текст белый */
+  color: var(--text-color);
 `;
 
 export const CloseButton = styled.button`
