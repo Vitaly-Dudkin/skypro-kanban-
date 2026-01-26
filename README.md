@@ -1,16 +1,34 @@
-# React + Vite
+# 📋 SkyPro Kanban — курсовой проект
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Kanban-доска для управления задачами. Проект разработан в рамках курса SkyPro.
 
-Currently, two official plugins are available:
+![Скриншот доски](./screenshots/board-light.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Функционал
 
-## React Compiler
+- ✅ Авторизация: регистрация и вход
+- ✅ Создание, просмотр, редактирование и удаление задач
+- ✅ Группировка задач по статусам:  
+  `Без статуса`, `Нужно сделать`, `В работе`, `Тестирование`, `Готово`
+- ✅ Категории задач: `Web Design`, `Research`, `Copywriting`
+- ✅ Выбор даты исполнения через встроенный календарь
+- ✅ Поддержка **светлой и тёмной темы** с сохранением в `localStorage`
+- ✅ Адаптивный дизайн (мобильные устройства)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ⚙️ Технологии
 
-## Expanding the ESLint configuration
+- **React** + **Vite**
+- **React Router DOM** — маршрутизация
+- **Context API** — управление состоянием (авторизация, задачи, тема)
+- **styled-components** — стилизация компонентов
+- **REST API** — [wedev-api.sky.pro](https://wedev-api.sky.pro/api)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📦 Запуск проекта
+
+1. Клонируйте репозиторий:
+   ```bash
+   git clone https://github.com/ваш-логин/skypro-kanban.git
+
+2. cd skypro-kanban
+3. npm install
+4. npm run dev
